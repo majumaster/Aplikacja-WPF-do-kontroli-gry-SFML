@@ -15,7 +15,6 @@ using System.Windows.Shapes;
 using System.IO;
 using System.ComponentModel;
 using System.Threading;
-
 namespace WpfApp
 {
     /// <summary>
@@ -28,17 +27,30 @@ namespace WpfApp
         int iloPrzeciw=0;
         string iloPrzeciwStr = "0";
         double maxPrzeciw = 1;
+        //string testPoziomStr;
+        string []IloFPS_str1=new string[5];
+        //float[] IloFPS = new float[5];
+        Test test=new Test();
+
         double maxPrzeciwCopy = 1; //specjalna zmienna dla progressbaru
         double d = 0.0;
         int i;
-        DirectoryInfo datadir = new DirectoryInfo(@"C:\Users\MajuMaster\Desktop\gra sfml i aplikacja od lvl\gameSFML\Project1\Project1\test.txt");
-        string textfileLevel = @"C:\Users\MajuMaster\Desktop\gra sfml i aplikacja od lvl\gameSFML\Project1\Project1\test.txt";
+        DirectoryInfo datadir = new DirectoryInfo(@"C:\Users\MajuMaster\Desktop\gra sfml i aplikacja od lvl\gameSFML\Project1\Project1\poziom.txt");
+        string textfileLevel = @"C:\Users\MajuMaster\Desktop\gra sfml i aplikacja od lvl\gameSFML\Project1\Project1\poziom.txt";
         DirectoryInfo datadir2 = new DirectoryInfo(@"C:\Users\MajuMaster\Desktop\gra sfml i aplikacja od lvl\gameSFML\Project1\Project1\iloscPrzeciwnikow.txt");
         string textfileIloPrzeciw = @"C:\Users\MajuMaster\Desktop\gra sfml i aplikacja od lvl\gameSFML\Project1\Project1\iloscPrzeciwnikow.txt";
-        
+        DirectoryInfo datadir3 = new DirectoryInfo(@"C:\Users\MajuMaster\Desktop\gra sfml i aplikacja od lvl\gameSFML\Project1\Project1\testOnOff.txt");
+        string textfileCzyTest = @"C:\Users\MajuMaster\Desktop\gra sfml i aplikacja od lvl\gameSFML\Project1\Project1\testOnOff.txt";
+        DirectoryInfo datadir4 = new DirectoryInfo(@"C:\Users\MajuMaster\Desktop\gra sfml i aplikacja od lvl\gameSFML\Project1\Project1\iloscFPS.txt");
+        string textfileIloFPS = @"C:\Users\MajuMaster\Desktop\gra sfml i aplikacja od lvl\gameSFML\Project1\Project1\iloscFPS.txt";
+
 
         public MainWindow()
         {
+            File.WriteAllText(textfileLevel, "0");
+            File.WriteAllText(textfileCzyTest, "0");
+
+
             InitializeComponent();
             //ProgressBarProgLevelu.Maximum = 1;
             
@@ -142,6 +154,36 @@ namespace WpfApp
             }
             
             
+        }
+
+        private void ButtonTest_Click(object sender, RoutedEventArgs e)
+        {
+            
+            File.WriteAllText(textfileCzyTest, "1");
+
+            for (int i = 0; i < 5; i++)
+            {
+                test.testPoziomStr = Convert.ToString(i);
+                File.WriteAllText(textfileLevel, test.testPoziomStr);
+                test.IloFPS_str[i] = File.ReadAllText(textfileIloFPS);
+                Thread.Sleep(4000);
+                //IloFPS_str1[i] = File.ReadAllText(textfileIloFPS);
+                //Thread.Sleep(500);
+
+            }
+            
+            
+            File.WriteAllText(textfileLevel, "0");
+            File.WriteAllText(textfileCzyTest, "0");
+            
+
+
+            MessageBox.Show("Test urządzenia ukończony Pomiary FPS:" +
+                "\nPoziom 0:" + test.IloFPS_str[0] +
+                "\nPoziom 1: " + test.IloFPS_str[1] +
+                "\nPoziom 2: " + test.IloFPS_str[2] +
+                "\nPoziom 3: " + test.IloFPS_str[3] +
+                "\nPoziom 4: "+test.IloFPS_str[4]);
         }
     }
 }
