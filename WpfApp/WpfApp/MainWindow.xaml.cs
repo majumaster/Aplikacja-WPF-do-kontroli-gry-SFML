@@ -20,6 +20,7 @@ namespace WpfApp
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    //dodanie metody automatycznej zmiany lvl
     public partial class MainWindow : Window
     {
         int poziom=1;
@@ -43,7 +44,7 @@ namespace WpfApp
         string textfileCzyTest = @"C:\Users\MajuMaster\Desktop\gra sfml i aplikacja od lvl\gameSFML\Project1\Project1\testOnOff.txt";
         DirectoryInfo datadir4 = new DirectoryInfo(@"C:\Users\MajuMaster\Desktop\gra sfml i aplikacja od lvl\gameSFML\Project1\Project1\iloscFPS.txt");
         string textfileIloFPS = @"C:\Users\MajuMaster\Desktop\gra sfml i aplikacja od lvl\gameSFML\Project1\Project1\iloscFPS.txt";
-
+        
 
         public MainWindow()
         {
@@ -52,27 +53,16 @@ namespace WpfApp
 
 
             InitializeComponent();
-            //ProgressBarProgLevelu.Maximum = 1;
-            
-            /*
-            ProgressBarProgLevelu.Value = iloPrzeciw;
-            BackgroundWorker worker = new BackgroundWorker();
-            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-            worker.WorkerReportsProgress = true;
-            worker.DoWork += worker_DoWork;
-            worker.ProgressChanged += worker_ProgressChanged;
-            worker.RunWorkerAsync();
-            */
+           
             
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            
+            /*
             File.WriteAllText(textfileLevel, poziomStr);
             MessageBox.Show("zatwierdzony level");
-            //file.WriteLine(text);
-            // file.Write(poziom);
+            
             maxPrzeciwCopy = maxPrzeciw;
             ProgressBarProgLevelu.Maximum = maxPrzeciw;
 
@@ -82,8 +72,11 @@ namespace WpfApp
             worker.DoWork +=worker_DoWork;
             worker.ProgressChanged += worker_ProgressChanged;
             worker.RunWorkerAsync();
-            
-            
+            */
+            levelProgress();
+           
+
+
         }
 
         private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -121,8 +114,12 @@ namespace WpfApp
 
         private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            MessageBox.Show("ukończono level");
+            //MessageBox.Show("ukończono level");
             ProgressBarProgLevelu.Value = 0;
+            poziom++;
+            ustawieniaLevelu();
+            levelProgress();
+            
         }
         /// <summary>
         /// /////////////////////////////////////////
@@ -131,10 +128,13 @@ namespace WpfApp
         private void ButtonNastepny_Click(object sender, RoutedEventArgs e)
         {
             poziom += 1;
+            /*
             maxPrzeciw =Convert.ToDouble(poziom);
             maxPrzeciw = Math.Pow(maxPrzeciw, 2);
             poziomStr = poziom.ToString();
             label2.Content = poziomStr;
+            */
+            ustawieniaLevelu();
         }
 
         private void ButtonPoprzedni_Click(object sender, RoutedEventArgs e)
@@ -147,10 +147,13 @@ namespace WpfApp
             else
             {
                 poziom -= 1;
+                /*
                 maxPrzeciw = Convert.ToDouble(poziom);
                 maxPrzeciw = Math.Pow(maxPrzeciw, 2);
                 poziomStr =poziom.ToString();
                 label2.Content = poziomStr;
+                */
+                ustawieniaLevelu();
             }
             
             
@@ -184,6 +187,33 @@ namespace WpfApp
                 "\nPoziom 2: " + test.IloFPS_str[2] +
                 "\nPoziom 3: " + test.IloFPS_str[3] +
                 "\nPoziom 4: "+test.IloFPS_str[4]);
+        }
+
+        void levelProgress()
+        {
+
+            File.WriteAllText(textfileLevel, poziomStr);
+
+            //MessageBox.Show("zatwierdzony level");
+
+            maxPrzeciwCopy = maxPrzeciw;
+            ProgressBarProgLevelu.Maximum = maxPrzeciw;
+
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += worker_DoWork;
+            worker.ProgressChanged += worker_ProgressChanged;
+            worker.RunWorkerAsync();
+
+
+        }
+        void ustawieniaLevelu()
+        {
+            maxPrzeciw = Convert.ToDouble(poziom);
+            maxPrzeciw = Math.Pow(maxPrzeciw, 2);
+            poziomStr = poziom.ToString();
+            label2.Content = poziomStr;
         }
     }
 }
